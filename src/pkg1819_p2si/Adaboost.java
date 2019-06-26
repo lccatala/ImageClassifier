@@ -96,7 +96,25 @@ public class Adaboost {
         strongClassifier.add(wc);
     }
     
-    public double getLiability(DBLoader dbl) {
+    public double getTrainingLiability(DBLoader dbl) {
+        double liability = 0.0;
+        ArrayList correctSet = dbl.getCorrectTrainingDatasetForIndex(category);
+        ArrayList incorrectSet = dbl.getIncorrectTrainingDatasetForIndex(category);
+        for (int i = 0; i < strongClassifier.size(); i++) {
+            for (int j = 0; j < correctSet.size(); j++) {
+                Imagen ci = (Imagen)correctSet.get(j);  
+                liability += (strongClassifier.get(i).pointIsAbovePlane(ci) ? 1.0 : 0.0);
+            }
+            
+            for (int j = 0; j < incorrectSet.size(); j++) {
+                Imagen ci = (Imagen)incorrectSet.get(j);  
+                liability += (strongClassifier.get(i).pointIsAbovePlane(ci) ? 0.0 : 1.0);
+            }
+        }
+        return liability / ((correctSet.size() + incorrectSet.size()) * strongClassifier.size());
+    }
+    
+    public double getTestingLiability(DBLoader dbl) {
         double liability = 0.0;
         for (int i = 0; i < 8; i++) {
             ArrayList set = dbl.getImageDatasetForIndex(i);

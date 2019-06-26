@@ -5,13 +5,11 @@
  */
 package pkg1819_p2si;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,35 +29,27 @@ public class Main {
         DBLoader ml = new DBLoader();
         ml.loadDBFromPath("./db");
         
-        for (int i = 0; i < 8; i++) {
-            Adaboost a = new Adaboost(ml, i);
-            a.train();
-            System.out.println("Liability: " + a.getLiability(ml));
-        }
-        
-        
-        //train("classifiers.cf", ml);
-        
-        /*
         switch (args[0]) {
             case "-train":
                 train(args[1], ml);
                 break;
             case "-run":
-                //classify(args[1]);
+                Imagen img = (Imagen)ml.getImageDatasetForIndex(5).get(0);
+                classify(args[1], ml, img);
                 break;
             default:
                 System.out.println("Error: argumento " + args[0] + " no válido");
-        }
-        */
+        }  
     }
     
     private static void train(String filename, DBLoader dbl) {
         Adaboost[] strongClassifiers = new Adaboost[8];
         for (int i = 0; i < 8; i++) {
             strongClassifiers[i] = new Adaboost(dbl, i);
+            System.out.println("Training classifier for category " + i + "...");
             strongClassifiers[i].train();
-            
+            System.out.println("Liability with training set: " + strongClassifiers[i].getTrainingLiability(dbl));
+            System.out.println("Liability with testing set: " + strongClassifiers[i].getTestingLiability(dbl));
         }
         writeData(filename, strongClassifiers);
     }
