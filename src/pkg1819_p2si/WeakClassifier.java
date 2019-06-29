@@ -89,13 +89,13 @@ public class WeakClassifier {
         // Dataset pertaining to expected category
         for (int i = 0; i < correctSet.size() / 2; i++) {
             Imagen img = (Imagen)correctSet.get(i);
-            Y[i] = pointIsAbovePlane(img) ? 0.0 : 1.0;
+            Y[i] = pointIsAbovePlane(img) ? -1.0 : 1.0;
         }
         
         // Dataset not pertaining to expected category
         for (int i = incorrectSet.size() / 2; i < incorrectSet.size(); i++) {
             Imagen img = (Imagen)incorrectSet.get(i);
-            Y[i] = pointIsAbovePlane(img) ? 1.0 : 0.0;
+            Y[i] = pointIsAbovePlane(img) ? 1.0 : -1.0;
         }
     }
     

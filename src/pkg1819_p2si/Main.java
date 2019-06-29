@@ -48,7 +48,6 @@ public class Main {
             strongClassifiers[i] = new Adaboost(dbl, i);
             System.out.println("Training classifier for category " + i + "...");
             strongClassifiers[i].train();
-            System.out.println("Liability with training set: " + strongClassifiers[i].getTrainingLiability(dbl));
             System.out.println("Liability with testing set: " + strongClassifiers[i].getTestingLiability(dbl));
         }
         writeData(filename, strongClassifiers);
@@ -63,7 +62,6 @@ public class Main {
         
         for (byte i = 0; i < 8; i++) {
             nlh = classifier[i].getLikelyhood(img);
-            System.out.println("New likelyhood: " + nlh);
             if (nlh > blh) {
                 blh = nlh;
                 category = i;
