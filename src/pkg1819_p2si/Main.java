@@ -39,7 +39,7 @@ public class Main {
                 break;
             default:
                 System.out.println("Error: argumento " + args[0] + " no válido");
-        }  
+        } 
     }
     
     private static void train(String filename, DBLoader dbl) {
@@ -111,14 +111,14 @@ public class Main {
                 for (int k = 0; k < 100; k++) {
                     lineScanner = new Scanner(fileScanner.nextLine());
                     WeakClassifier wc = new WeakClassifier();
-                    byte[] pos = new byte[784];
+                    double[] pos = new double[784];
                     for (int j = 0; j < 784; j++) 
-                        pos[j] = (byte)lineScanner.nextInt();
+                        pos[j] = Double.parseDouble(lineScanner.next());
                     wc.setPosition(pos);
 
-                    byte[] norm = new byte[784];
+                    double[] norm = new double[784];
                     for (int j = 0; j < 784; j++) 
-                        norm[j] = (byte)lineScanner.nextInt();
+                        norm[j] = Double.parseDouble(lineScanner.next());
                     wc.setNormal(norm);
                     
                     // If we try to read from file with nextDouble(), it throws an InputMismatchException

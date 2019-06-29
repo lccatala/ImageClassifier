@@ -17,20 +17,23 @@ public class WeakClassifier {
     private double error;
     private double alpha;
     
-    private byte[] position;
-    private byte[] normal;
+    private double[] position;
+    private double[] normal;
     private double[] Y;
     
     public WeakClassifier(int setSize, boolean generate) {
-        position = new byte[784];
-        normal = new byte[784];
+        position = new double[784];
+        normal = new double[784];
         Y = new double[setSize];
         for (int i = 0; i < setSize; i++)
             Y[i] = 0;
         
         if (generate) {
-            new Random().nextBytes(position);
-            new Random().nextBytes(normal);
+            Random r = new Random();
+            for (int i = 0; i < 784; i++) {
+                normal[i] = Math.random() * 2 - 1;
+                position[i] = r.nextDouble() * 255.0;
+            }
         }
         
         error = Double.MAX_VALUE;
@@ -50,10 +53,10 @@ public class WeakClassifier {
     }
     
     public boolean pointIsAbovePlane(Imagen img) {
-        return dotProduct(normal, pointDifference(img.getImageData(), position)) > 0;
+        return dotProduct(normal, pointDifference(position, img.getImageData())) > 0;
     }
     
-    private int dotProduct(byte[] point, byte[] vector) {
+    private int dotProduct(double[] point, double[] vector) {
         int result = 0;
         for (int i = 0; i < point.length; i++) {
             result += point[i] * vector[i];
@@ -73,10 +76,10 @@ public class WeakClassifier {
      * @param point2 subtractor point
      * @return point1 - point2
      */
-    private byte[] pointDifference(byte[] point1, byte[] point2) {
-        byte[] result = new byte[point1.length];
+    private double[] pointDifference(double[] point1, byte[] point2) {
+        double[] result = new double[point1.length];
         for (int i = 0; i < point1.length; i++)
-            result[i] = (byte)(point1[i] - point2[i]);
+            result[i] = (double)(point1[i] - point2[i]);
         return result;
     }
     
@@ -117,19 +120,19 @@ public class WeakClassifier {
         alpha = 0.5 * ((double)Math.log10((double)(1.0 - error) / error) / (double)Math.log10(2));
     }
     
-    public byte[] getPosition() {
+    public double[] getPosition() {
         return position;
     }
     
-    public void setPosition(byte[] p) {
+    public void setPosition(double[] p) {
         position = p;
     }
     
-    public byte[] getNormal() {
+    public double[] getNormal() {
         return normal;
     }
     
-    public void setNormal(byte[] n) {
+    public void setNormal(double[] n) {
         normal = n;
     }
     
